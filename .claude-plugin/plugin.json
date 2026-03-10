@@ -1,0 +1,8 @@
+{
+  "name": "gemini-bridge",
+  "version": "0.1.0",
+  "description": "Bridges Claude Code with Gemini CLI for cross-model code review and web-grounded research",
+  "author": {
+    "name": "Javier Fernandes"
+  }
+}
