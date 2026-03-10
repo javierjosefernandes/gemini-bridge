@@ -24,13 +24,18 @@ bugs, retain cycles, logic errors, and subtle security issues.
 ### Step 1: Gather Context
 
 1. Run `git diff HEAD` to capture all staged and unstaged changes against the last commit
-2. Check if a `CLAUDE.md` file exists in the project root
-3. If `CLAUDE.md` exists, read its contents to use as coding standards context
-4. Summarize the current conversation context — what the user has been working on,
+2. Run `git ls-files --others --exclude-standard` to detect untracked (new) files
+3. For each untracked file, read its contents and format as a unified diff
+   (prefix each line with `+`, use the header `--- /dev/null` / `+++ b/<file>`)
+4. Combine the tracked diff and untracked file diffs into a single diff block
+5. Check if a `CLAUDE.md` file exists in the project root
+6. If `CLAUDE.md` exists, read its contents to use as coding standards context
+7. Summarize the current conversation context — what the user has been working on,
    the intent behind the changes, and any relevant decisions made during the session.
    This summary helps Gemini review the diff with the right intent in mind.
 
-If `git diff HEAD` returns empty, inform the user there are no changes to review and stop.
+If both the tracked diff and untracked file list are empty, inform the user there are
+no changes to review and stop.
 
 ### Step 2: Build the Gemini Prompt
 
@@ -57,9 +62,9 @@ The project follows these coding standards — flag any violations:
 [CLAUDE.md contents]
 </standards>
 
-Here is the diff to review:
+Here is the diff to review (includes tracked changes and any new untracked files):
 <diff>
-[git diff output]
+[combined diff output — tracked changes + untracked files]
 </diff>
 
 For each issue found, specify:
@@ -116,7 +121,7 @@ Gemini found no issues with the current changes.
 
 ## Error Handling
 
-- **Empty diff**: Inform user, stop. Do not call Gemini.
+- **Empty diff and no untracked files**: Inform user, stop. Do not call Gemini.
 - **Gemini CLI not found**: Tell user to install with `npm install -g @google/gemini-cli`
 - **Gemini auth failure**: Tell user to run `gemini` once to re-authenticate
 - **Gemini timeout or crash**: Report the error, move on. Do not retry.
