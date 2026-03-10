@@ -1,0 +1,15 @@
+{
+  "name": "gemini-bridge",
+  "owner": {
+    "name": "Javier Fernandes"
+  },
+  "plugins": [
+    {
+      "name": "gemini-bridge",
+      "source": ".",
+      "description": "Cross-model code review and web-grounded research via Gemini CLI",
+      "version": "0.1.0",
+      "keywords": ["gemini", "code-review", "research"]
+    }
+  ]
+}
