@@ -6,7 +6,7 @@
   "plugins": [
     {
       "name": "gemini-bridge",
-      "source": ".",
+      "source": "./",
       "description": "Cross-model code review and web-grounded research via Gemini CLI",
       "version": "0.1.0",
       "keywords": ["gemini", "code-review", "research"]
